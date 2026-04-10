@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 
 const IMG_HERO = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/files/97699bcb-f310-41b3-a7cf-577ed1b74af6.jpg";
-const IMG_VENUE = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/files/adaecb71-c70d-4370-ad2e-4fcda2922158.jpg";
+const IMG_VENUE = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/1d33951a-91b7-4a91-bc90-c4252a87c3b8.jpg";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -249,7 +249,6 @@ export default function Index() {
           <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
             {[
               { icon: "Car", title: "На машине", desc: "Бесплатная парковка на территории ресторана" },
-              { icon: "Bus", title: "Общественный транспорт", desc: "Автобусы 10, 28 — остановка «Элеваторная»" },
               { icon: "Phone", title: "Вопросы по проезду", desc: "Свяжитесь с нами — поможем добраться" },
             ].map(item => (
               <Reveal key={item.title}>
