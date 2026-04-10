@@ -309,38 +309,15 @@ export default function Index() {
             <p className="font-body text-base leading-loose mb-10" style={{ color: "var(--stone)" }}>
               Мы будем рады нарядам в тёплой, земляной гамме — шоколадных, кремовых, пыльно-розовых и оливковых оттенках. Ваш образ станет частью общей атмосферы праздника.
             </p>
-            <p className="font-body text-xs tracking-widest uppercase py-4 px-6 inline-block"
-              style={{ border: "1px solid var(--line)", color: "var(--stone)" }}>
-              Просьба избегать чёрного и белого цветов
-            </p>
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { name: "Шоколад",        color: "#4a3728" },
-                { name: "Айвори",         color: "#f5f0e0" },
-                { name: "Топлёное молоко",color: "#c8bfb0" },
-                { name: "Кофе с молоком", color: "#c4a882" },
-                { name: "Пыльная роза",   color: "#b89aaa" },
-                { name: "Шалфей",         color: "#94a882" },
-              ].map(item => (
-                <div key={item.name} className="group cursor-default">
-                  <div
-                    className="aspect-square mb-2 overflow-hidden transition-transform duration-300 group-hover:scale-95 relative"
-                    style={{ border: "1px solid rgba(0,0,0,0.07)", background: item.color }}
-                  >
-                    <img
-                      src="https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/44e4f184-3869-42d7-a3ee-bd4b8c672e53.jpg"
-                      alt={item.name}
-                      className="absolute inset-0 w-full h-full"
-                      style={{ objectFit: "cover", mixBlendMode: "multiply", opacity: 0.55 }}
-                    />
-                  </div>
-                  <p className="font-body text-xs" style={{ color: "var(--ink)" }}>{item.name}</p>
-                </div>
-              ))}
-            </div>
+            <img
+              src="https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/d83d70b5-c5ff-4042-81fc-f133760c4c12.png"
+              alt="Дресс-код палитра"
+              className="w-full rounded-sm"
+              style={{ border: "1px solid var(--line)" }}
+            />
           </Reveal>
         </div>
       </section>
