@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const IMG_HERO = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/files/97699bcb-f310-41b3-a7cf-577ed1b74af6.jpg";
+const IMG_HERO = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/61cbb675-2847-4a1a-9103-edb143959ad6.jpg";
 const IMG_VENUE = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/1d33951a-91b7-4a91-bc90-c4252a87c3b8.jpg";
 
 function useReveal() {
@@ -214,7 +214,12 @@ export default function Index() {
 
         {/* Right — photo */}
         <div className="relative min-h-[50vh] md:min-h-screen order-1 md:order-2 overflow-hidden">
-          <img src={IMG_HERO} alt="Wedding" className="absolute inset-0 w-full h-full object-cover" />
+          {/* Размытый фон */}
+          <img src={IMG_HERO} alt="" className="absolute inset-0 w-full h-full object-cover scale-110"
+            style={{ filter: "grayscale(100%) blur(12px) brightness(0.6)", transform: "scale(1.15)" }} />
+          {/* Пара в фокусе — обрезаем по центру */}
+          <img src={IMG_HERO} alt="Wedding" className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: "grayscale(100%) contrast(1.05) brightness(1.05)", objectPosition: "55% center" }} />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 60%, var(--paper))" }} />
           {/* Issue label */}
           <div className="absolute top-8 right-8 text-right">
