@@ -348,8 +348,9 @@ export default function Index() {
               </p>
               <div className="space-y-2">
                 <p className="font-body text-xs tracking-widest uppercase" style={{ color: "rgba(255,255,255,0.5)" }}>Контакты</p>
-                <p className="font-display text-xl">+7 (999) 000-00-00</p>
-                <p className="font-display text-xl">@wedding_so</p>
+                <p className="font-display text-xl">+7 937 164-63-38 (София)</p>
+                <p className="font-display text-xl">+7 996 581-17-69 (Олег)</p>
+                <p className="font-display text-xl">@Sonya0336</p>
               </div>
             </Reveal>
           </div>
@@ -372,9 +373,9 @@ export default function Index() {
           </Reveal>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { icon: "Phone", label: "Телефон", value: "+7 (999) 000-00-00" },
-              { icon: "MessageCircle", label: "Telegram", value: "@wedding_so" },
-              { icon: "Mail", label: "Email", value: "wedding@example.com" },
+              { icon: "Phone", label: "София", value: "+7 937 164-63-38" },
+              { icon: "Phone", label: "Олег", value: "+7 996 581-17-69" },
+              { icon: "MessageCircle", label: "Telegram", value: "@Sonya0336" },
               { icon: "MapPin", label: "Адрес", value: "Уфа, ул. Элеваторная, 13" },
             ].map((item, i) => (
               <Reveal key={item.label} delay={i * 80}>
