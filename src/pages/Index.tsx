@@ -316,12 +316,14 @@ export default function Index() {
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               {[
-                { color: "#f0f0f0", name: "Светло-серый", hex: "#F0F0F0" },
-                { color: "#cccccc", name: "Серебристый", hex: "#CCCCCC" },
-                { color: "#f8f8f8", name: "Белый", hex: "#F8F8F8" },
-                { color: "#999999", name: "Графитовый", hex: "#999999" },
+                { color: "#4a3728", name: "Шоколад", hex: "#4A3728" },
+                { color: "#f5f0e0", name: "Айвори", hex: "#F5F0E0" },
+                { color: "#c8bfb0", name: "Топлёное молоко", hex: "#C8BFB0" },
+                { color: "#c4a882", name: "Кофе с молоком", hex: "#C4A882" },
+                { color: "#b89aaa", name: "Пыльная роза", hex: "#B89AAA" },
+                { color: "#94a882", name: "Шалфей", hex: "#94A882" },
               ].map(item => (
                 <div key={item.name} className="group cursor-default">
                   <div className="aspect-square mb-3 transition-transform duration-300 group-hover:scale-95"
