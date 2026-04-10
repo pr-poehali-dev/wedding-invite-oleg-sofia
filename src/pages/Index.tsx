@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const IMG_HERO = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/61cbb675-2847-4a1a-9103-edb143959ad6.jpg";
+const IMG_HERO = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/8b91c65f-dc4b-4008-9a41-0651e5e70fb5.jpg";
 const IMG_VENUE = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/1d33951a-91b7-4a91-bc90-c4252a87c3b8.jpg";
 
 function useReveal() {
@@ -229,14 +229,11 @@ export default function Index() {
         </div>
 
         {/* Right — photo */}
-        <div className="relative min-h-[50vh] md:min-h-screen order-1 md:order-2 overflow-hidden">
-          {/* Размытый фон */}
-          <img src={IMG_HERO} alt="" className="absolute inset-0 w-full h-full object-cover"
-            style={{ filter: "grayscale(100%) blur(14px) brightness(0.55)", transform: "scale(1.1)" }} />
-          {/* Пара целиком — contain чтобы не обрезать */}
+        <div className="relative min-h-[50vh] md:min-h-screen order-1 md:order-2 overflow-hidden"
+          style={{ background: "#1a1714" }}>
           <img src={IMG_HERO} alt="Wedding" className="absolute inset-0 w-full h-full"
-            style={{ filter: "grayscale(100%) contrast(1.05) brightness(1.05)", objectFit: "contain", objectPosition: "center center" }} />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, var(--paper))" }} />
+            style={{ objectFit: "contain", objectPosition: "center top" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 70%, var(--paper))" }} />
           {/* Issue label */}
           <div className="absolute top-8 right-8 text-right">
             <p className="font-body text-xs tracking-widest uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
