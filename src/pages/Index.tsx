@@ -318,23 +318,23 @@ export default function Index() {
           <Reveal delay={150}>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { name: "Шоколад", pos: "0% 0%" },
-                { name: "Айвори", pos: "0% 20%" },
-                { name: "Топлёное молоко", pos: "0% 40%" },
-                { name: "Кофе с молоком", pos: "0% 60%" },
-                { name: "Пыльная роза", pos: "0% 80%" },
-                { name: "Шалфей", pos: "0% 100%" },
+                { name: "Шоколад",        color: "#4a3728" },
+                { name: "Айвори",         color: "#f5f0e0" },
+                { name: "Топлёное молоко",color: "#c8bfb0" },
+                { name: "Кофе с молоком", color: "#c4a882" },
+                { name: "Пыльная роза",   color: "#b89aaa" },
+                { name: "Шалфей",         color: "#94a882" },
               ].map(item => (
                 <div key={item.name} className="group cursor-default">
                   <div
-                    className="aspect-square mb-2 overflow-hidden transition-transform duration-300 group-hover:scale-95"
-                    style={{ border: "1px solid rgba(0,0,0,0.07)" }}
+                    className="aspect-square mb-2 overflow-hidden transition-transform duration-300 group-hover:scale-95 relative"
+                    style={{ border: "1px solid rgba(0,0,0,0.07)", background: item.color }}
                   >
                     <img
                       src="https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/44e4f184-3869-42d7-a3ee-bd4b8c672e53.jpg"
                       alt={item.name}
-                      className="w-full h-full object-cover"
-                      style={{ objectPosition: item.pos, transform: "scaleX(-1)" }}
+                      className="absolute inset-0 w-full h-full"
+                      style={{ objectFit: "cover", mixBlendMode: "multiply", opacity: 0.55 }}
                     />
                   </div>
                   <p className="font-body text-xs" style={{ color: "var(--ink)" }}>{item.name}</p>
