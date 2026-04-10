@@ -28,10 +28,18 @@ function Reveal({ children, className = "", delay = 0 }: { children: React.React
   );
 }
 
+const DRINKS = ["Игристое вино", "Красное вино", "Белое вино", "Водка", "Самогон", "Коньяк"];
+
 function RSVPForm() {
   const [name, setName] = useState("");
   const [attending, setAttending] = useState<"yes" | "no" | null>(null);
+  const [drinks, setDrinks] = useState<string[]>([]);
+  const [customDrink, setCustomDrink] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  const toggleDrink = (d: string) => {
+    setDrinks(prev => prev.includes(d) ? prev.filter(x => x !== d) : [...prev, d]);
+  };
 
   if (submitted) {
     return (
@@ -57,7 +65,7 @@ function RSVPForm() {
         />
       </div>
 
-      <div>
+      <div className="border-b pb-6" style={{ borderColor: "var(--line)" }}>
         <p className="font-body text-xs tracking-[0.3em] uppercase mb-4" style={{ color: "var(--stone)" }}>Вы придёте?</p>
         <div className="flex gap-3">
           {[{ v: "yes", l: "Буду" }, { v: "no", l: "Не смогу" }].map(o => (
@@ -77,6 +85,38 @@ function RSVPForm() {
           ))}
         </div>
       </div>
+
+      {attending === "yes" && (
+        <div>
+          <p className="font-body text-xs tracking-[0.3em] uppercase mb-4" style={{ color: "var(--stone)" }}>
+            Что будете пить?
+          </p>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {DRINKS.map(d => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => toggleDrink(d)}
+                className="px-4 py-2 font-body text-xs tracking-wider transition-all duration-200"
+                style={{
+                  background: drinks.includes(d) ? "var(--ink)" : "transparent",
+                  color: drinks.includes(d) ? "var(--paper)" : "var(--ink)",
+                  border: "1px solid var(--ink)",
+                }}
+              >
+                {d}
+              </button>
+            ))}
+          </div>
+          <input
+            value={customDrink}
+            onChange={e => setCustomDrink(e.target.value)}
+            placeholder="Свой вариант..."
+            className="w-full bg-transparent border-b py-2 font-body text-sm outline-none"
+            style={{ borderColor: "var(--line)", color: "var(--ink)" }}
+          />
+        </div>
+      )}
 
       <button
         type="submit"
