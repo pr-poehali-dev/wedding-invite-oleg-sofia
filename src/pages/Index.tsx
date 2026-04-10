@@ -205,7 +205,7 @@ export default function Index() {
               <div className="grid grid-cols-3 gap-8 pt-6" style={{ borderTop: "1px solid var(--line)" }}>
                 {[
                   { n: "08.08", l: "Дата" },
-                  { n: "16:00", l: "Начало" },
+                  { n: "14:40", l: "Начало" },
                   { n: "Уфа", l: "Город" },
                 ].map(item => (
                   <div key={item.l}>
@@ -276,11 +276,10 @@ export default function Index() {
 
           <div className="space-y-0">
             {[
-              { time: "15:30", title: "Сбор гостей", desc: "Приветственный коктейль" },
-              { time: "16:00", title: "Церемония", desc: "Торжественная регистрация брака" },
-              { time: "17:00", title: "Фотосессия", desc: "Прогулка и фото на память" },
-              { time: "18:00", title: "Банкет", desc: "Праздничный ужин и танцы" },
-              { time: "23:00", title: "Фейерверк", desc: "Финальный аккорд вечера" },
+              { time: "14:20", title: "Сбор гостей", desc: "Встреча у ЗАГСа Калининского района" },
+              { time: "14:40", title: "Регистрация брака", desc: "Торжественная церемония в ЗАГСе" },
+              { time: "17:00", title: "Банкет", desc: "Праздничный ужин в ресторане «Версаль»" },
+              { time: "23:00", title: "Окончание вечера", desc: "До новых встреч!" },
             ].map((item, i) => (
               <Reveal key={i} delay={i * 60}>
                 <div className="flex items-start gap-8 py-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
