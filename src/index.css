@@ -25,14 +25,14 @@
     --ring: 20 10% 10%;
     --radius: 0rem;
 
-    /* Editorial palette */
-    --paper: #f9f7f3;
-    --ink: #1a1714;
-    --stone: #8a847d;
-    --line: #e4e0d8;
-    --accent: #9b6e5a;
-    --accent-light: #e8c4b0;
-    --cream-dark: #f0ece3;
+    /* Editorial palette — B&W */
+    --paper: #f8f8f8;
+    --ink: #111111;
+    --stone: #888888;
+    --line: #dedede;
+    --accent: #333333;
+    --accent-light: #bbbbbb;
+    --cream-dark: #efefef;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

@@ -318,10 +318,10 @@ export default function Index() {
           <Reveal delay={150}>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { color: "#e8c4c4", name: "Нежно-розовый", hex: "#E8C4C4" },
-                { color: "#d4d4e4", name: "Серебристый", hex: "#D4D4E4" },
-                { color: "#f0ebe0", name: "Айвори", hex: "#F0EBE0" },
-                { color: "#c9d5c4", name: "Шалфей", hex: "#C9D5C4" },
+                { color: "#f0f0f0", name: "Светло-серый", hex: "#F0F0F0" },
+                { color: "#cccccc", name: "Серебристый", hex: "#CCCCCC" },
+                { color: "#f8f8f8", name: "Белый", hex: "#F8F8F8" },
+                { color: "#999999", name: "Графитовый", hex: "#999999" },
               ].map(item => (
                 <div key={item.name} className="group cursor-default">
                   <div className="aspect-square mb-3 transition-transform duration-300 group-hover:scale-95"
