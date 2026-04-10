@@ -30,12 +30,15 @@ function Reveal({ children, className = "", delay = 0 }: { children: React.React
 
 const DRINKS = ["Игристое вино", "Красное вино", "Белое вино", "Водка", "Самогон", "Коньяк"];
 
+const RSVP_URL = "https://functions.poehali.dev/14df0165-ee7d-4d53-b87b-ff168ad82763";
+
 function RSVPForm() {
   const [name, setName] = useState("");
   const [attending, setAttending] = useState<"yes" | "no" | null>(null);
   const [drinks, setDrinks] = useState<string[]>([]);
   const [customDrink, setCustomDrink] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const toggleDrink = (d: string) => {
     setDrinks(prev => prev.includes(d) ? prev.filter(x => x !== d) : [...prev, d]);
@@ -52,8 +55,20 @@ function RSVPForm() {
     );
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    await fetch(RSVP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, attending, drinks, customDrink }),
+    });
+    setLoading(false);
+    setSubmitted(true);
+  };
+
   return (
-    <form onSubmit={e => { e.preventDefault(); setSubmitted(true); }} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8">
       <div className="border-b pb-4" style={{ borderColor: "var(--line)" }}>
         <p className="font-body text-xs tracking-[0.3em] uppercase mb-3" style={{ color: "var(--stone)" }}>Ваше имя</p>
         <input
@@ -120,10 +135,11 @@ function RSVPForm() {
 
       <button
         type="submit"
-        className="w-full py-5 font-body text-xs tracking-[0.3em] uppercase transition-all duration-300 hover:opacity-70"
+        disabled={loading}
+        className="w-full py-5 font-body text-xs tracking-[0.3em] uppercase transition-all duration-300 hover:opacity-70 disabled:opacity-50"
         style={{ background: "var(--accent)", color: "var(--paper)" }}
       >
-        Отправить ответ
+        {loading ? "Отправляем..." : "Отправить ответ"}
       </button>
     </form>
   );
@@ -215,12 +231,12 @@ export default function Index() {
         {/* Right — photo */}
         <div className="relative min-h-[50vh] md:min-h-screen order-1 md:order-2 overflow-hidden">
           {/* Размытый фон */}
-          <img src={IMG_HERO} alt="" className="absolute inset-0 w-full h-full object-cover scale-110"
-            style={{ filter: "grayscale(100%) blur(12px) brightness(0.6)", transform: "scale(1.15)" }} />
-          {/* Пара в фокусе — обрезаем по центру */}
-          <img src={IMG_HERO} alt="Wedding" className="absolute inset-0 w-full h-full object-cover"
-            style={{ filter: "grayscale(100%) contrast(1.05) brightness(1.05)", objectPosition: "55% center" }} />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 60%, var(--paper))" }} />
+          <img src={IMG_HERO} alt="" className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: "grayscale(100%) blur(14px) brightness(0.55)", transform: "scale(1.1)" }} />
+          {/* Пара целиком — contain чтобы не обрезать */}
+          <img src={IMG_HERO} alt="Wedding" className="absolute inset-0 w-full h-full"
+            style={{ filter: "grayscale(100%) contrast(1.05) brightness(1.05)", objectFit: "contain", objectPosition: "center center" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, var(--paper))" }} />
           {/* Issue label */}
           <div className="absolute top-8 right-8 text-right">
             <p className="font-body text-xs tracking-widest uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
