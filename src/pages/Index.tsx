@@ -307,29 +307,37 @@ export default function Index() {
               Стиль<br />вечера
             </h2>
             <p className="font-body text-base leading-loose mb-10" style={{ color: "var(--stone)" }}>
-              Мы будем рады нарядам в нежной, романтичной гамме. Ваш образ станет частью общей атмосферы праздника.
+              Мы будем рады нарядам в тёплой, земляной гамме — шоколадных, кремовых, пыльно-розовых и оливковых оттенках. Ваш образ станет частью общей атмосферы праздника.
             </p>
             <p className="font-body text-xs tracking-widest uppercase py-4 px-6 inline-block"
               style={{ border: "1px solid var(--line)", color: "var(--stone)" }}>
-              Просьба избегать белого цвета
+              Просьба избегать чёрного и белого цветов
             </p>
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               {[
-                { color: "#4a3728", name: "Шоколад", hex: "#4A3728" },
-                { color: "#f5f0e0", name: "Айвори", hex: "#F5F0E0" },
-                { color: "#c8bfb0", name: "Топлёное молоко", hex: "#C8BFB0" },
-                { color: "#c4a882", name: "Кофе с молоком", hex: "#C4A882" },
-                { color: "#b89aaa", name: "Пыльная роза", hex: "#B89AAA" },
-                { color: "#94a882", name: "Шалфей", hex: "#94A882" },
+                { name: "Шоколад", pos: "0% 0%" },
+                { name: "Айвори", pos: "0% 20%" },
+                { name: "Топлёное молоко", pos: "0% 40%" },
+                { name: "Кофе с молоком", pos: "0% 60%" },
+                { name: "Пыльная роза", pos: "0% 80%" },
+                { name: "Шалфей", pos: "0% 100%" },
               ].map(item => (
                 <div key={item.name} className="group cursor-default">
-                  <div className="aspect-square mb-3 transition-transform duration-300 group-hover:scale-95"
-                    style={{ background: item.color, border: "1px solid rgba(0,0,0,0.05)" }} />
+                  <div
+                    className="aspect-square mb-2 overflow-hidden transition-transform duration-300 group-hover:scale-95"
+                    style={{ border: "1px solid rgba(0,0,0,0.07)" }}
+                  >
+                    <img
+                      src="https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/bucket/44e4f184-3869-42d7-a3ee-bd4b8c672e53.jpg"
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                      style={{ objectPosition: item.pos, transform: "scaleX(-1)" }}
+                    />
+                  </div>
                   <p className="font-body text-xs" style={{ color: "var(--ink)" }}>{item.name}</p>
-                  <p className="font-body text-xs" style={{ color: "var(--stone)" }}>{item.hex}</p>
                 </div>
               ))}
             </div>
