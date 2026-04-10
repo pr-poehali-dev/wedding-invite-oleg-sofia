@@ -1,463 +1,404 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const HERO_IMAGE = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/files/5e818587-0389-4719-bbf2-333db9e8f17a.jpg";
+const IMG_HERO = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/files/97699bcb-f310-41b3-a7cf-577ed1b74af6.jpg";
+const IMG_VENUE = "https://cdn.poehali.dev/projects/40fd3ffb-65ba-4467-a3a2-a57542356d40/files/adaecb71-c70d-4370-ad2e-4fcda2922158.jpg";
 
-function useScrollReveal() {
+function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); } },
-      { threshold: 0.15 }
+    const io = new IntersectionObserver(
+      ([e]) => e.isIntersecting && el.classList.add("revealed"),
+      { threshold: 0.1 }
     );
-    observer.observe(el);
-    return () => observer.disconnect();
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
   return ref;
 }
 
-function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const ref = useScrollReveal();
+function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useReveal();
   return (
-    <div ref={ref} className={`section-enter ${className}`}>
+    <div ref={ref} className={`reveal-block ${className}`} style={{ transitionDelay: `${delay}ms` }}>
       {children}
     </div>
   );
 }
 
-function Divider() {
-  return <div className="divider-line my-16 mx-auto max-w-xs" />;
-}
-
 function RSVPForm() {
   const [name, setName] = useState("");
   const [attending, setAttending] = useState<"yes" | "no" | null>(null);
-  const [guests, setGuests] = useState("1");
   const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
 
   if (submitted) {
     return (
-      <div className="text-center py-8">
-        <p className="font-cormorant text-3xl italic" style={{ color: "var(--rose-deep)" }}>
-          Спасибо, {name || "дорогой гость"}!
-        </p>
-        <p className="font-montserrat text-sm mt-3" style={{ color: "var(--text-muted)" }}>
-          Мы с нетерпением ждём встречи с вами
+      <div className="py-12 text-center">
+        <p className="font-display text-5xl mb-3" style={{ color: "var(--ink)" }}>Спасибо!</p>
+        <p className="font-body text-sm tracking-widest uppercase" style={{ color: "var(--stone)" }}>
+          Ждём вас, {name || "дорогой гость"}
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6">
-      <div>
-        <label className="block font-montserrat text-xs tracking-widest uppercase mb-2" style={{ color: "var(--text-muted)" }}>
-          Ваше имя
-        </label>
+    <form onSubmit={e => { e.preventDefault(); setSubmitted(true); }} className="space-y-8">
+      <div className="border-b pb-4" style={{ borderColor: "var(--line)" }}>
+        <p className="font-body text-xs tracking-[0.3em] uppercase mb-3" style={{ color: "var(--stone)" }}>Ваше имя</p>
         <input
-          type="text"
           value={name}
           onChange={e => setName(e.target.value)}
           placeholder="Введите имя"
-          className="w-full border-b bg-transparent py-2 font-montserrat text-sm outline-none transition-colors focus:border-current"
-          style={{ borderColor: "var(--rose)", color: "var(--dark)" }}
+          className="w-full bg-transparent font-display text-3xl outline-none placeholder-opacity-30"
+          style={{ color: "var(--ink)", caretColor: "var(--accent)" }}
         />
       </div>
 
       <div>
-        <label className="block font-montserrat text-xs tracking-widest uppercase mb-3" style={{ color: "var(--text-muted)" }}>
-          Вы придёте?
-        </label>
-        <div className="flex gap-4">
-          {[{ val: "yes", label: "С радостью!" }, { val: "no", label: "К сожалению, нет" }].map(opt => (
+        <p className="font-body text-xs tracking-[0.3em] uppercase mb-4" style={{ color: "var(--stone)" }}>Вы придёте?</p>
+        <div className="flex gap-3">
+          {[{ v: "yes", l: "Буду" }, { v: "no", l: "Не смогу" }].map(o => (
             <button
-              key={opt.val}
+              key={o.v}
               type="button"
-              onClick={() => setAttending(opt.val as "yes" | "no")}
-              className="flex-1 py-3 font-montserrat text-xs tracking-wider transition-all duration-300"
+              onClick={() => setAttending(o.v as "yes" | "no")}
+              className="flex-1 py-4 font-body text-xs tracking-widest uppercase transition-all duration-300"
               style={{
-                border: `1px solid ${attending === opt.val ? "var(--rose-deep)" : "var(--rose)"}`,
-                backgroundColor: attending === opt.val ? "var(--rose-deep)" : "transparent",
-                color: attending === opt.val ? "white" : "var(--dark)",
+                background: attending === o.v ? "var(--ink)" : "transparent",
+                color: attending === o.v ? "var(--paper)" : "var(--ink)",
+                border: "1px solid var(--ink)",
               }}
             >
-              {opt.label}
+              {o.l}
             </button>
           ))}
         </div>
       </div>
 
-      {attending === "yes" && (
-        <div>
-          <label className="block font-montserrat text-xs tracking-widest uppercase mb-2" style={{ color: "var(--text-muted)" }}>
-            Количество гостей
-          </label>
-          <select
-            value={guests}
-            onChange={e => setGuests(e.target.value)}
-            className="w-full border-b bg-transparent py-2 font-montserrat text-sm outline-none"
-            style={{ borderColor: "var(--rose)", color: "var(--dark)" }}
-          >
-            {["1", "2", "3", "4"].map(n => (
-              <option key={n} value={n}>{n}</option>
-            ))}
-          </select>
-        </div>
-      )}
-
       <button
         type="submit"
-        className="w-full py-4 font-montserrat text-xs tracking-widest uppercase transition-all duration-300 hover:opacity-80"
-        style={{ backgroundColor: "var(--dark)", color: "white" }}
+        className="w-full py-5 font-body text-xs tracking-[0.3em] uppercase transition-all duration-300 hover:opacity-70"
+        style={{ background: "var(--accent)", color: "var(--paper)" }}
       >
-        Подтвердить
+        Отправить ответ
       </button>
     </form>
   );
 }
 
 export default function Index() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
+    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
   return (
-    <div className="min-h-screen font-montserrat" style={{ backgroundColor: "var(--cream)", color: "var(--dark)" }}>
+    <div className="min-h-screen" style={{ background: "var(--paper)", color: "var(--ink)" }}>
 
-      {/* Nav */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
-        style={{
-          backgroundColor: scrolled ? "rgba(250,248,245,0.95)" : "transparent",
-          backdropFilter: scrolled ? "blur(8px)" : "none",
-          borderBottom: scrolled ? "1px solid var(--rose)" : "none",
-        }}
-      >
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <span className="font-cormorant text-lg italic" style={{ color: "var(--rose-deep)" }}>С & О</span>
-          <div className="hidden md:flex gap-8">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5"
+        style={{ background: "rgba(249,247,243,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--line)" }}>
+        <span className="font-display text-xl" style={{ color: "var(--ink)" }}>С & О</span>
+        <nav className="hidden md:flex gap-10">
+          {["about", "venue", "program", "dresscode", "rsvp"].map(id => (
+            <button key={id} onClick={() => scrollTo(id)}
+              className="font-body text-xs tracking-[0.25em] uppercase transition-opacity hover:opacity-50"
+              style={{ color: "var(--stone)" }}>
+              {({ about: "О нас", venue: "Место", program: "Программа", dresscode: "Дресс-код", rsvp: "RSVP" })[id]}
+            </button>
+          ))}
+        </nav>
+        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)} style={{ color: "var(--ink)" }}>
+          <Icon name={menuOpen ? "X" : "Menu"} size={20} />
+        </button>
+      </header>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8"
+          style={{ background: "var(--paper)" }}>
+          {["about", "venue", "program", "dresscode", "rsvp"].map(id => (
+            <button key={id} onClick={() => scrollTo(id)}
+              className="font-display text-4xl transition-opacity hover:opacity-50"
+              style={{ color: "var(--ink)" }}>
+              {({ about: "О нас", venue: "Место", program: "Программа", dresscode: "Дресс-код", rsvp: "RSVP" })[id]}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* HERO — fullscreen editorial split */}
+      <section className="min-h-screen grid md:grid-cols-2 pt-16">
+        {/* Left — text */}
+        <div className="flex flex-col justify-end p-8 md:p-16 pb-16 order-2 md:order-1">
+          <Reveal>
+            <p className="font-body text-xs tracking-[0.4em] uppercase mb-8" style={{ color: "var(--stone)" }}>
+              08 · 08 · 2026 &nbsp;·&nbsp; Уфа
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <h1 className="font-display leading-[0.9] mb-2" style={{ fontSize: "clamp(4rem, 11vw, 9rem)", color: "var(--ink)" }}>
+              София
+            </h1>
+          </Reveal>
+          <Reveal delay={150}>
+            <div className="flex items-center gap-4 my-3">
+              <div className="flex-1 h-px" style={{ background: "var(--accent)" }} />
+              <span className="font-display text-xl italic" style={{ color: "var(--accent)" }}>&</span>
+              <div className="flex-1 h-px" style={{ background: "var(--accent)" }} />
+            </div>
+          </Reveal>
+          <Reveal delay={200}>
+            <h1 className="font-display leading-[0.9] mb-10" style={{ fontSize: "clamp(4rem, 11vw, 9rem)", color: "var(--ink)" }}>
+              Олег
+            </h1>
+          </Reveal>
+          <Reveal delay={300}>
+            <p className="font-body text-sm leading-relaxed max-w-sm mb-10" style={{ color: "var(--stone)" }}>
+              Мы приглашаем вас разделить с нами самый важный день нашей жизни — день, когда мы станем семьёй.
+            </p>
+          </Reveal>
+          <Reveal delay={400}>
+            <button onClick={() => scrollTo("rsvp")}
+              className="self-start px-10 py-4 font-body text-xs tracking-[0.3em] uppercase transition-all duration-300 hover:opacity-80"
+              style={{ background: "var(--ink)", color: "var(--paper)" }}>
+              Подтвердить присутствие
+            </button>
+          </Reveal>
+        </div>
+
+        {/* Right — photo */}
+        <div className="relative min-h-[50vh] md:min-h-screen order-1 md:order-2 overflow-hidden">
+          <img src={IMG_HERO} alt="Wedding" className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 60%, var(--paper))" }} />
+          {/* Issue label */}
+          <div className="absolute top-8 right-8 text-right">
+            <p className="font-body text-xs tracking-widest uppercase" style={{ color: "rgba(255,255,255,0.7)" }}>
+              Свадьба
+            </p>
+            <p className="font-display text-lg" style={{ color: "rgba(255,255,255,0.9)" }}>2026</p>
+          </div>
+        </div>
+      </section>
+
+      {/* О событии */}
+      <section id="about" className="py-24 px-8 md:px-16">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-16 items-start">
+          <div className="md:col-span-1">
+            <Reveal>
+              <p className="font-body text-xs tracking-[0.35em] uppercase mb-4" style={{ color: "var(--stone)" }}>01</p>
+              <h2 className="font-display text-6xl leading-tight" style={{ color: "var(--ink)" }}>О<br />нас</h2>
+            </Reveal>
+          </div>
+          <div className="md:col-span-2 space-y-10">
+            <Reveal delay={100}>
+              <p className="font-body text-lg leading-loose" style={{ color: "var(--stone)" }}>
+                8 августа 2026 года мы соединим наши жизни в браке. Этот день станет началом нашей
+                общей истории — и мы хотим, чтобы рядом были самые дорогие нам люди.
+              </p>
+            </Reveal>
+            <Reveal delay={200}>
+              <div className="grid grid-cols-3 gap-8 pt-6" style={{ borderTop: "1px solid var(--line)" }}>
+                {[
+                  { n: "08.08", l: "Дата" },
+                  { n: "16:00", l: "Начало" },
+                  { n: "Уфа", l: "Город" },
+                ].map(item => (
+                  <div key={item.l}>
+                    <p className="font-display text-3xl mb-1" style={{ color: "var(--ink)" }}>{item.n}</p>
+                    <p className="font-body text-xs tracking-widest uppercase" style={{ color: "var(--stone)" }}>{item.l}</p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Место — full bleed photo + overlay */}
+      <section id="venue" className="relative overflow-hidden">
+        <div className="relative h-[70vh]">
+          <img src={IMG_VENUE} alt="Venue" className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)" }} />
+          <div className="absolute inset-0 flex items-end p-10 md:p-20">
+            <Reveal>
+              <p className="font-body text-xs tracking-[0.35em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>02 — Место проведения</p>
+              <h2 className="font-display text-5xl md:text-7xl mb-4 leading-tight" style={{ color: "#fff" }}>
+                Ресторан<br />«Версаль»
+              </h2>
+              <p className="font-body text-sm mb-6" style={{ color: "rgba(255,255,255,0.7)" }}>
+                Уфа, ул. Элеваторная, 13
+              </p>
+              <a href="https://yandex.ru/maps/?text=Уфа+Элеваторная+13" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-body text-xs tracking-widest uppercase transition-opacity hover:opacity-70"
+                style={{ color: "var(--accent-light)", borderBottom: "1px solid var(--accent-light)", paddingBottom: "2px" }}>
+                <Icon name="MapPin" size={14} />
+                Открыть карту
+              </a>
+            </Reveal>
+          </div>
+        </div>
+
+        {/* Транспорт */}
+        <div className="bg-white py-12 px-8 md:px-20">
+          <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
             {[
-              { id: "about", label: "О событии" },
-              { id: "venue", label: "Место" },
-              { id: "program", label: "Программа" },
-              { id: "rsvp", label: "RSVP" },
+              { icon: "Car", title: "На машине", desc: "Бесплатная парковка на территории ресторана" },
+              { icon: "Bus", title: "Общественный транспорт", desc: "Автобусы 10, 28 — остановка «Элеваторная»" },
+              { icon: "Phone", title: "Вопросы по проезду", desc: "Свяжитесь с нами — поможем добраться" },
             ].map(item => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className="font-montserrat text-xs tracking-widest uppercase hover:opacity-60 transition-opacity"
-                style={{ color: "var(--dark)" }}
-              >
-                {item.label}
-              </button>
+              <Reveal key={item.title}>
+                <div className="flex gap-4">
+                  <div className="mt-1 flex-shrink-0" style={{ color: "var(--accent)" }}>
+                    <Icon name={item.icon} size={18} />
+                  </div>
+                  <div>
+                    <p className="font-body text-xs tracking-widest uppercase mb-1" style={{ color: "var(--ink)" }}>{item.title}</p>
+                    <p className="font-body text-sm" style={{ color: "var(--stone)" }}>{item.desc}</p>
+                  </div>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
-      </nav>
-
-      {/* Hero */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `url(${HERO_IMAGE})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(to bottom, var(--cream) 0%, rgba(250,248,245,0.3) 40%, rgba(250,248,245,0.3) 60%, var(--cream) 100%)",
-          }}
-        />
-
-        <div className="relative z-10">
-          <p className="fade-up font-montserrat text-xs tracking-[0.4em] uppercase mb-10" style={{ color: "var(--text-muted)" }}>
-            Мы приглашаем вас разделить с нами этот особый день
-          </p>
-
-          <h1 className="fade-up-delay-1 font-cormorant font-light leading-none" style={{ fontSize: "clamp(3.5rem, 10vw, 8rem)", color: "var(--dark)" }}>
-            София
-          </h1>
-
-          <div className="fade-up-delay-2 flex items-center justify-center gap-6 my-4">
-            <div className="h-px w-16" style={{ background: "linear-gradient(90deg, transparent, var(--rose))" }} />
-            <span className="font-cormorant italic text-2xl" style={{ color: "var(--rose-deep)" }}>&</span>
-            <div className="h-px w-16" style={{ background: "linear-gradient(90deg, var(--rose), transparent)" }} />
-          </div>
-
-          <h1 className="fade-up-delay-2 font-cormorant font-light leading-none" style={{ fontSize: "clamp(3.5rem, 10vw, 8rem)", color: "var(--dark)" }}>
-            Олег
-          </h1>
-
-          <div className="fade-up-delay-3 mt-12 space-y-2">
-            <p className="font-cormorant text-2xl" style={{ color: "var(--rose-deep)" }}>8 августа 2026</p>
-            <p className="font-montserrat text-xs tracking-widest uppercase" style={{ color: "var(--text-muted)" }}>
-              Суббота · Уфа
-            </p>
-          </div>
-
-          <button
-            onClick={() => scrollTo("rsvp")}
-            className="fade-up-delay-4 mt-14 px-12 py-4 font-montserrat text-xs tracking-widest uppercase transition-all duration-300 hover:opacity-80"
-            style={{ border: "1px solid var(--rose-deep)", color: "var(--rose-deep)" }}
-          >
-            Подтвердить присутствие
-          </button>
-        </div>
-
-        <button
-          onClick={() => scrollTo("about")}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce"
-          style={{ color: "var(--rose)" }}
-        >
-          <Icon name="ChevronDown" size={24} />
-        </button>
       </section>
 
-      <div className="max-w-3xl mx-auto px-6">
+      {/* Программа */}
+      <section id="program" className="py-24 px-8 md:px-16" style={{ background: "var(--ink)" }}>
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <p className="font-body text-xs tracking-[0.35em] uppercase mb-4" style={{ color: "rgba(255,255,255,0.4)" }}>03</p>
+            <h2 className="font-display text-6xl mb-16" style={{ color: "var(--paper)" }}>Программа</h2>
+          </Reveal>
 
-        {/* О событии */}
-        <section id="about">
-          <Section>
-            <div className="text-center py-20">
-              <p className="font-montserrat text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "var(--text-muted)" }}>01 — О событии</p>
-              <h2 className="font-cormorant text-5xl font-light mb-10" style={{ color: "var(--dark)" }}>Наш день</h2>
-              <p className="font-montserrat text-sm leading-loose max-w-xl mx-auto" style={{ color: "var(--text-muted)" }}>
-                Мы рады сообщить вам, что 8 августа 2026 года мы соединим наши жизни в браке.
-                Этот день будет наполнен теплом, любовью и искренними эмоциями — и мы очень
-                хотим разделить его с самыми близкими людьми.
-              </p>
-
-              <div className="grid grid-cols-3 gap-8 mt-16">
-                {[
-                  { icon: "Calendar", label: "Дата", value: "8 августа 2026" },
-                  { icon: "Clock", label: "Время", value: "16:00" },
-                  { icon: "MapPin", label: "Место", value: "Уфа" },
-                ].map(item => (
-                  <div key={item.label} className="text-center">
-                    <div className="flex justify-center mb-3" style={{ color: "var(--rose-deep)" }}>
-                      <Icon name={item.icon} size={20} />
-                    </div>
-                    <p className="font-montserrat text-xs tracking-widest uppercase mb-1" style={{ color: "var(--text-muted)" }}>{item.label}</p>
-                    <p className="font-cormorant text-xl" style={{ color: "var(--dark)" }}>{item.value}</p>
+          <div className="space-y-0">
+            {[
+              { time: "15:30", title: "Сбор гостей", desc: "Приветственный коктейль" },
+              { time: "16:00", title: "Церемония", desc: "Торжественная регистрация брака" },
+              { time: "17:00", title: "Фотосессия", desc: "Прогулка и фото на память" },
+              { time: "18:00", title: "Банкет", desc: "Праздничный ужин и танцы" },
+              { time: "23:00", title: "Фейерверк", desc: "Финальный аккорд вечера" },
+            ].map((item, i) => (
+              <Reveal key={i} delay={i * 60}>
+                <div className="flex items-start gap-8 py-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+                  <span className="font-display text-2xl w-20 flex-shrink-0" style={{ color: "var(--accent-light)" }}>
+                    {item.time}
+                  </span>
+                  <div className="flex-1">
+                    <p className="font-display text-3xl mb-1" style={{ color: "var(--paper)" }}>{item.title}</p>
+                    <p className="font-body text-sm" style={{ color: "rgba(255,255,255,0.45)" }}>{item.desc}</p>
                   </div>
-                ))}
-              </div>
-            </div>
-          </Section>
-        </section>
-
-        <Divider />
-
-        {/* Место */}
-        <section id="venue">
-          <Section>
-            <div className="text-center py-4">
-              <p className="font-montserrat text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "var(--text-muted)" }}>02 — Место проведения</p>
-              <h2 className="font-cormorant text-5xl font-light mb-10" style={{ color: "var(--dark)" }}>Где нас найти</h2>
-
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="text-left space-y-6">
-                  <div>
-                    <p className="font-cormorant text-2xl mb-2" style={{ color: "var(--dark)" }}>Ресторан «Версаль»</p>
-                    <p className="font-montserrat text-sm" style={{ color: "var(--text-muted)" }}>
-                      Уфа, ул. Элеваторная, 13
-                    </p>
-                  </div>
-                  <div className="space-y-3">
-                    {[
-                      { icon: "Car", text: "30 минут от центра Москвы" },
-                      { icon: "ParkingCircle", text: "Бесплатная парковка на территории" },
-                      { icon: "Bus", text: "Автобус 541 от станции м. Митино" },
-                    ].map(item => (
-                      <div key={item.text} className="flex items-start gap-3">
-                        <Icon name={item.icon} size={16} style={{ color: "var(--rose-deep)", marginTop: "2px", flexShrink: 0 }} />
-                        <p className="font-montserrat text-sm" style={{ color: "var(--text-muted)" }}>{item.text}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <a
-                    href="https://yandex.ru/maps/?text=Ресторан+Версаль+Уфа+Элеваторная+13"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 font-montserrat text-xs tracking-widest uppercase transition-opacity hover:opacity-60"
-                    style={{ color: "var(--rose-deep)" }}
-                  >
-                    <Icon name="ExternalLink" size={14} />
-                    Открыть на карте
-                  </a>
+                  <span className="font-body text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>0{i + 1}</span>
                 </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                <div
-                  className="aspect-square rounded-sm overflow-hidden"
-                  style={{ border: "1px solid var(--rose)" }}
-                >
-                  <iframe
-                    title="Карта"
-                    src="https://yandex.ru/map-widget/v1/?ll=55.958207%2C54.735152&z=16&pt=55.958207,54.735152,pm2rdm"
-                    width="100%"
-                    height="100%"
-                    style={{ border: "none" }}
-                    allowFullScreen
-                  />
+      {/* Дресс-код */}
+      <section id="dresscode" className="py-24 px-8 md:px-16">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          <Reveal>
+            <p className="font-body text-xs tracking-[0.35em] uppercase mb-4" style={{ color: "var(--stone)" }}>04 — Дресс-код</p>
+            <h2 className="font-display text-6xl leading-tight mb-8" style={{ color: "var(--ink)" }}>
+              Стиль<br />вечера
+            </h2>
+            <p className="font-body text-base leading-loose mb-10" style={{ color: "var(--stone)" }}>
+              Мы будем рады нарядам в нежной, романтичной гамме. Ваш образ станет частью общей атмосферы праздника.
+            </p>
+            <p className="font-body text-xs tracking-widest uppercase py-4 px-6 inline-block"
+              style={{ border: "1px solid var(--line)", color: "var(--stone)" }}>
+              Просьба избегать белого цвета
+            </p>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { color: "#e8c4c4", name: "Нежно-розовый", hex: "#E8C4C4" },
+                { color: "#d4d4e4", name: "Серебристый", hex: "#D4D4E4" },
+                { color: "#f0ebe0", name: "Айвори", hex: "#F0EBE0" },
+                { color: "#c9d5c4", name: "Шалфей", hex: "#C9D5C4" },
+              ].map(item => (
+                <div key={item.name} className="group cursor-default">
+                  <div className="aspect-square mb-3 transition-transform duration-300 group-hover:scale-95"
+                    style={{ background: item.color, border: "1px solid rgba(0,0,0,0.05)" }} />
+                  <p className="font-body text-xs" style={{ color: "var(--ink)" }}>{item.name}</p>
+                  <p className="font-body text-xs" style={{ color: "var(--stone)" }}>{item.hex}</p>
                 </div>
-              </div>
+              ))}
             </div>
-          </Section>
-        </section>
+          </Reveal>
+        </div>
+      </section>
 
-        <Divider />
-
-        {/* Программа */}
-        <section id="program">
-          <Section>
-            <div className="text-center py-4">
-              <p className="font-montserrat text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "var(--text-muted)" }}>03 — Программа торжества</p>
-              <h2 className="font-cormorant text-5xl font-light mb-14" style={{ color: "var(--dark)" }}>Расписание дня</h2>
-
-              <div className="relative max-w-lg mx-auto">
-                <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2" style={{ background: "linear-gradient(180deg, transparent, var(--rose) 20%, var(--rose) 80%, transparent)" }} />
-
-                {[
-                  { time: "15:30", event: "Сбор гостей", desc: "Приветственный коктейль в саду" },
-                  { time: "16:00", event: "Церемония", desc: "Торжественная регистрация брака" },
-                  { time: "17:00", event: "Фотосессия", desc: "Прогулка по территории усадьбы" },
-                  { time: "18:00", event: "Банкет", desc: "Праздничный ужин и танцевальная программа" },
-                  { time: "23:00", event: "Фейерверк", desc: "Яркое завершение вечера" },
-                ].map((item, i) => (
-                  <div key={i} className={`flex items-start gap-8 mb-10 ${i % 2 === 0 ? "flex-row-reverse text-right" : "text-left"}`}>
-                    <div className="flex-1">
-                      <p className="font-cormorant text-2xl mb-1" style={{ color: "var(--dark)" }}>{item.event}</p>
-                      <p className="font-montserrat text-xs" style={{ color: "var(--text-muted)" }}>{item.desc}</p>
-                    </div>
-                    <div className="relative flex-shrink-0 flex items-center justify-center w-8">
-                      <div className="w-2 h-2 rounded-full z-10" style={{ backgroundColor: "var(--rose-deep)" }} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-cormorant text-xl italic" style={{ color: "var(--rose-deep)" }}>{item.time}</p>
-                    </div>
-                  </div>
-                ))}
+      {/* RSVP */}
+      <section id="rsvp" style={{ background: "var(--cream-dark)" }}>
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2">
+          {/* Left info */}
+          <div className="py-24 px-8 md:px-16 flex flex-col justify-center" style={{ background: "var(--accent)", color: "var(--paper)" }}>
+            <Reveal>
+              <p className="font-body text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "rgba(255,255,255,0.6)" }}>05 — RSVP</p>
+              <h2 className="font-display text-5xl mb-6 leading-tight">Подтвердите<br />присутствие</h2>
+              <p className="font-body text-sm leading-loose mb-10" style={{ color: "rgba(255,255,255,0.75)" }}>
+                Просим ответить до 1 июля 2026 года, чтобы мы могли позаботиться о каждом госте.
+              </p>
+              <div className="space-y-2">
+                <p className="font-body text-xs tracking-widest uppercase" style={{ color: "rgba(255,255,255,0.5)" }}>Контакты</p>
+                <p className="font-display text-xl">+7 (999) 000-00-00</p>
+                <p className="font-display text-xl">@wedding_so</p>
               </div>
-            </div>
-          </Section>
-        </section>
+            </Reveal>
+          </div>
 
-        <Divider />
-
-        {/* Дресс-код */}
-        <section id="dresscode">
-          <Section>
-            <div className="text-center py-4">
-              <p className="font-montserrat text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "var(--text-muted)" }}>04 — Дресс-код</p>
-              <h2 className="font-cormorant text-5xl font-light mb-8" style={{ color: "var(--dark)" }}>Стиль вечера</h2>
-              <p className="font-montserrat text-sm leading-loose max-w-lg mx-auto mb-12" style={{ color: "var(--text-muted)" }}>
-                Мы будем рады, если вы выберете наряды в нежных и элегантных тонах.
-                Это создаст единую гармоничную атмосферу нашего торжества.
-              </p>
-
-              <div className="flex flex-wrap justify-center gap-8">
-                {[
-                  { color: "#e8c4c4", name: "Нежно-розовый" },
-                  { color: "#d4d4e4", name: "Серебристый" },
-                  { color: "#f5f0e8", name: "Айвори" },
-                  { color: "#c4d4c4", name: "Мятный" },
-                ].map(item => (
-                  <div key={item.name} className="text-center">
-                    <div
-                      className="w-16 h-16 rounded-full mx-auto mb-3 shadow-sm"
-                      style={{ backgroundColor: item.color, border: "1px solid rgba(0,0,0,0.05)" }}
-                    />
-                    <p className="font-montserrat text-xs" style={{ color: "var(--text-muted)" }}>{item.name}</p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="font-cormorant text-lg italic mt-10" style={{ color: "var(--rose-deep)" }}>
-                Просьба избегать белого и чёрного цветов
-              </p>
-            </div>
-          </Section>
-        </section>
-
-        <Divider />
-
-        {/* RSVP */}
-        <section id="rsvp">
-          <Section>
-            <div className="text-center py-4 mb-10">
-              <p className="font-montserrat text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "var(--text-muted)" }}>05 — RSVP</p>
-              <h2 className="font-cormorant text-5xl font-light mb-4" style={{ color: "var(--dark)" }}>Подтвердите присутствие</h2>
-              <p className="font-montserrat text-sm mb-12" style={{ color: "var(--text-muted)" }}>
-                Просим ответить до 1 июля 2026 года
-              </p>
+          {/* Right form */}
+          <div className="py-24 px-8 md:px-16 flex flex-col justify-center" style={{ background: "var(--paper)" }}>
+            <Reveal>
               <RSVPForm />
-            </div>
-          </Section>
-        </section>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
-        <Divider />
-
-        {/* Контакты */}
-        <section id="contacts">
-          <Section>
-            <div className="text-center py-4 pb-24">
-              <p className="font-montserrat text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "var(--text-muted)" }}>06 — Контакты</p>
-              <h2 className="font-cormorant text-5xl font-light mb-8" style={{ color: "var(--dark)" }}>Есть вопросы?</h2>
-              <p className="font-montserrat text-sm mb-12" style={{ color: "var(--text-muted)" }}>
-                Свяжитесь с организаторами по любому удобному каналу
-              </p>
-
-              <div className="grid md:grid-cols-2 gap-4 max-w-lg mx-auto">
-                {[
-                  { icon: "Phone", label: "Алексей", value: "+7 (999) 000-00-00" },
-                  { icon: "Phone", label: "Мария", value: "+7 (999) 111-11-11" },
-                  { icon: "MessageCircle", label: "Telegram", value: "@wedding_am" },
-                  { icon: "Mail", label: "Email", value: "wedding@example.com" },
-                ].map(item => (
-                  <div
-                    key={item.label}
-                    className="flex items-center gap-4 p-5 transition-all duration-300 hover:opacity-80"
-                    style={{ border: "1px solid var(--rose)" }}
-                  >
-                    <div style={{ color: "var(--rose-deep)" }}>
-                      <Icon name={item.icon} size={18} />
-                    </div>
-                    <div className="text-left">
-                      <p className="font-montserrat text-xs tracking-widest uppercase" style={{ color: "var(--text-muted)" }}>{item.label}</p>
-                      <p className="font-cormorant text-lg" style={{ color: "var(--dark)" }}>{item.value}</p>
-                    </div>
+      {/* Контакты */}
+      <section id="contacts" className="py-24 px-8 md:px-16">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <p className="font-body text-xs tracking-[0.35em] uppercase mb-4" style={{ color: "var(--stone)" }}>06 — Контакты</p>
+            <h2 className="font-display text-6xl mb-16" style={{ color: "var(--ink)" }}>Связь</h2>
+          </Reveal>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { icon: "Phone", label: "Телефон", value: "+7 (999) 000-00-00" },
+              { icon: "MessageCircle", label: "Telegram", value: "@wedding_so" },
+              { icon: "Mail", label: "Email", value: "wedding@example.com" },
+              { icon: "MapPin", label: "Адрес", value: "Уфа, ул. Элеваторная, 13" },
+            ].map((item, i) => (
+              <Reveal key={item.label} delay={i * 80}>
+                <div className="flex items-start gap-5 py-6" style={{ borderBottom: "1px solid var(--line)" }}>
+                  <div style={{ color: "var(--accent)" }}><Icon name={item.icon} size={18} /></div>
+                  <div>
+                    <p className="font-body text-xs tracking-widest uppercase mb-1" style={{ color: "var(--stone)" }}>{item.label}</p>
+                    <p className="font-display text-2xl" style={{ color: "var(--ink)" }}>{item.value}</p>
                   </div>
-                ))}
-              </div>
-            </div>
-          </Section>
-        </section>
-
-      </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
-      <footer className="text-center py-12 border-t" style={{ borderColor: "var(--rose)" }}>
-        <p className="font-cormorant text-3xl italic mb-2" style={{ color: "var(--rose-deep)" }}>София & Олег</p>
-        <p className="font-montserrat text-xs tracking-widest uppercase" style={{ color: "var(--text-muted)" }}>
-          08 · 08 · 2026
+      <footer className="py-16 px-8 text-center" style={{ background: "var(--ink)" }}>
+        <p className="font-display text-5xl mb-3" style={{ color: "var(--paper)" }}>София & Олег</p>
+        <p className="font-body text-xs tracking-[0.4em] uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>
+          08 · 08 · 2026 &nbsp;·&nbsp; Уфа
         </p>
       </footer>
     </div>

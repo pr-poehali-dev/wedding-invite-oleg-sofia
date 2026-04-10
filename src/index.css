@@ -4,44 +4,35 @@
 
 @layer base {
   :root {
-    --background: 0 0% 99%;
-    --foreground: 340 10% 20%;
-
+    --background: 0 0% 100%;
+    --foreground: 20 10% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 340 10% 20%;
-
+    --card-foreground: 20 10% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 340 10% 20%;
-
-    --primary: 340 15% 35%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 340 20% 95%;
-    --secondary-foreground: 340 10% 25%;
-
-    --muted: 340 15% 96%;
-    --muted-foreground: 340 8% 55%;
-
-    --accent: 340 25% 88%;
-    --accent-foreground: 340 15% 25%;
-
+    --popover-foreground: 20 10% 10%;
+    --primary: 20 10% 10%;
+    --primary-foreground: 40 20% 97%;
+    --secondary: 40 15% 93%;
+    --secondary-foreground: 20 10% 10%;
+    --muted: 40 15% 93%;
+    --muted-foreground: 20 8% 50%;
+    --accent: 40 15% 93%;
+    --accent-foreground: 20 10% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 20 10% 10%;
+    --radius: 0rem;
 
-    --border: 340 15% 88%;
-    --input: 340 15% 88%;
-    --ring: 340 15% 35%;
-
-    --radius: 0.25rem;
-
-    /* Wedding custom vars */
-    --rose: #e8c4c4;
-    --rose-deep: #c9918f;
-    --silver: #b8b8c8;
-    --silver-light: #e8e8f0;
-    --cream: #faf8f5;
-    --dark: #2d2428;
-    --text-muted: #9a8f93;
+    /* Editorial palette */
+    --paper: #f9f7f3;
+    --ink: #1a1714;
+    --stone: #8a847d;
+    --line: #e4e0d8;
+    --accent: #9b6e5a;
+    --accent-light: #e8c4b0;
+    --cream-dark: #f0ece3;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -58,86 +49,37 @@
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
-    background-color: var(--cream);
+    background-color: var(--paper);
+    color: var(--ink);
   }
 }
 
-/* Animations */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Fonts mapping */
+.font-display {
+  font-family: "Cormorant Garamond", serif;
+}
+.font-body {
+  font-family: "Montserrat", sans-serif;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes shimmer {
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-.fade-up {
-  animation: fadeUp 0.9s ease forwards;
-}
-
-.fade-up-delay-1 {
-  animation: fadeUp 0.9s ease 0.15s forwards;
+/* Reveal animation */
+.reveal-block {
   opacity: 0;
-}
-.fade-up-delay-2 {
-  animation: fadeUp 0.9s ease 0.3s forwards;
-  opacity: 0;
-}
-.fade-up-delay-3 {
-  animation: fadeUp 0.9s ease 0.45s forwards;
-  opacity: 0;
-}
-.fade-up-delay-4 {
-  animation: fadeUp 0.9s ease 0.6s forwards;
-  opacity: 0;
-}
-
-.divider-line {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--rose),
-    var(--silver),
-    var(--rose),
-    transparent
-  );
-}
-
-.section-enter {
-  opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(28px);
   transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
+    opacity 0.75s ease,
+    transform 0.75s ease;
 }
 
-.section-enter.visible {
+.reveal-block.revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Placeholder color */
+input::placeholder {
+  color: var(--stone);
+  opacity: 0.5;
 }
