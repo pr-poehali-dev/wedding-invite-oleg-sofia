@@ -149,7 +149,7 @@ export default function Index() {
         }}
       >
         <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <span className="font-cormorant text-lg italic" style={{ color: "var(--rose-deep)" }}>A & M</span>
+          <span className="font-cormorant text-lg italic" style={{ color: "var(--rose-deep)" }}>С & О</span>
           <div className="hidden md:flex gap-8">
             {[
               { id: "about", label: "О событии" },
@@ -193,7 +193,7 @@ export default function Index() {
           </p>
 
           <h1 className="fade-up-delay-1 font-cormorant font-light leading-none" style={{ fontSize: "clamp(3.5rem, 10vw, 8rem)", color: "var(--dark)" }}>
-            Алексей
+            София
           </h1>
 
           <div className="fade-up-delay-2 flex items-center justify-center gap-6 my-4">
@@ -203,13 +203,13 @@ export default function Index() {
           </div>
 
           <h1 className="fade-up-delay-2 font-cormorant font-light leading-none" style={{ fontSize: "clamp(3.5rem, 10vw, 8rem)", color: "var(--dark)" }}>
-            Мария
+            Олег
           </h1>
 
           <div className="fade-up-delay-3 mt-12 space-y-2">
-            <p className="font-cormorant text-2xl" style={{ color: "var(--rose-deep)" }}>14 июня 2025</p>
+            <p className="font-cormorant text-2xl" style={{ color: "var(--rose-deep)" }}>8 августа 2026</p>
             <p className="font-montserrat text-xs tracking-widest uppercase" style={{ color: "var(--text-muted)" }}>
-              Суббота · Москва
+              Суббота · Уфа
             </p>
           </div>
 
@@ -240,16 +240,16 @@ export default function Index() {
               <p className="font-montserrat text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "var(--text-muted)" }}>01 — О событии</p>
               <h2 className="font-cormorant text-5xl font-light mb-10" style={{ color: "var(--dark)" }}>Наш день</h2>
               <p className="font-montserrat text-sm leading-loose max-w-xl mx-auto" style={{ color: "var(--text-muted)" }}>
-                Мы рады сообщить вам, что 14 июня 2025 года мы соединим наши жизни в браке.
+                Мы рады сообщить вам, что 8 августа 2026 года мы соединим наши жизни в браке.
                 Этот день будет наполнен теплом, любовью и искренними эмоциями — и мы очень
                 хотим разделить его с самыми близкими людьми.
               </p>
 
               <div className="grid grid-cols-3 gap-8 mt-16">
                 {[
-                  { icon: "Calendar", label: "Дата", value: "14 июня 2025" },
+                  { icon: "Calendar", label: "Дата", value: "8 августа 2026" },
                   { icon: "Clock", label: "Время", value: "16:00" },
-                  { icon: "MapPin", label: "Место", value: "Москва" },
+                  { icon: "MapPin", label: "Место", value: "Уфа" },
                 ].map(item => (
                   <div key={item.label} className="text-center">
                     <div className="flex justify-center mb-3" style={{ color: "var(--rose-deep)" }}>
@@ -276,9 +276,9 @@ export default function Index() {
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div className="text-left space-y-6">
                   <div>
-                    <p className="font-cormorant text-2xl mb-2" style={{ color: "var(--dark)" }}>Усадьба «Архангельское»</p>
+                    <p className="font-cormorant text-2xl mb-2" style={{ color: "var(--dark)" }}>Ресторан «Версаль»</p>
                     <p className="font-montserrat text-sm" style={{ color: "var(--text-muted)" }}>
-                      Ул. Садовая, 12, Москва
+                      Уфа, ул. Элеваторная, 13
                     </p>
                   </div>
                   <div className="space-y-3">
@@ -294,7 +294,7 @@ export default function Index() {
                     ))}
                   </div>
                   <a
-                    href="https://yandex.ru/maps/?text=Усадьба+Архангельское+Москва"
+                    href="https://yandex.ru/maps/?text=Ресторан+Версаль+Уфа+Элеваторная+13"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 font-montserrat text-xs tracking-widest uppercase transition-opacity hover:opacity-60"
@@ -311,7 +311,7 @@ export default function Index() {
                 >
                   <iframe
                     title="Карта"
-                    src="https://yandex.ru/map-widget/v1/?ll=37.370300%2C55.771530&z=14&pt=37.370300,55.771530,pm2rdm"
+                    src="https://yandex.ru/map-widget/v1/?ll=55.958207%2C54.735152&z=16&pt=55.958207,54.735152,pm2rdm"
                     width="100%"
                     height="100%"
                     style={{ border: "none" }}
@@ -406,7 +406,7 @@ export default function Index() {
               <p className="font-montserrat text-xs tracking-[0.35em] uppercase mb-6" style={{ color: "var(--text-muted)" }}>05 — RSVP</p>
               <h2 className="font-cormorant text-5xl font-light mb-4" style={{ color: "var(--dark)" }}>Подтвердите присутствие</h2>
               <p className="font-montserrat text-sm mb-12" style={{ color: "var(--text-muted)" }}>
-                Просим ответить до 1 июня 2025 года
+                Просим ответить до 1 июля 2026 года
               </p>
               <RSVPForm />
             </div>
@@ -455,9 +455,9 @@ export default function Index() {
 
       {/* Footer */}
       <footer className="text-center py-12 border-t" style={{ borderColor: "var(--rose)" }}>
-        <p className="font-cormorant text-3xl italic mb-2" style={{ color: "var(--rose-deep)" }}>Алексей & Мария</p>
+        <p className="font-cormorant text-3xl italic mb-2" style={{ color: "var(--rose-deep)" }}>София & Олег</p>
         <p className="font-montserrat text-xs tracking-widest uppercase" style={{ color: "var(--text-muted)" }}>
-          14 · 06 · 2025
+          08 · 08 · 2026
         </p>
       </footer>
     </div>
